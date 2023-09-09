@@ -16,3 +16,14 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
+//teste
+//teste 2
+//teste 3
+//teste mari
