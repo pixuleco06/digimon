@@ -3,31 +3,11 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-const DetalhesDigimon = () => {
-  const { name } = useParams();
-  const [digimon, setDigimon] = useState(null);
-
-  useEffect(() => {
-    async function fetchDigimonDetails() {
-      try {
-        const response = await axios.get(`https://digimon-api.vercel.app/api/digimon/name/${name}`);
-        setDigimon(response.data[0]);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchDigimonDetails();
-  }, [name]);
-
-  if (!digimon) {
-    return <Text>Loading...</Text>;
-  }
-
+const DigimonCard = ({ digimon, setSelectedDigimon }) => {
   return (
-    <View style={styles.detalhesContainer}>
-      <Text style={styles.title}>Name: {digimon.name}</Text>
+    <View style={styles.digimonCard}>
       <Image source={{ uri: digimon.img }} style={styles.image} />
+      <Text style={styles.title}>Name: {digimon.name}</Text>
       <Text>Level: {digimon.level}</Text>
       <TouchableOpacity style={styles.detailsButton}>
         <Text style={styles.buttonText}>Adquirir</Text>
@@ -40,7 +20,7 @@ const DetalhesDigimon = () => {
 };
 
 const styles = StyleSheet.create({
-  detalhesContainer: {
+  digimonCard: {
     flex: 1,
     alignItems: 'center',
     padding: 20,
@@ -80,4 +60,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetalhesDigimon;
+export default DigimonCard;

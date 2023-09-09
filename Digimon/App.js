@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginPage from './pages/LoginPage';
 import DadosDigimon from './pages/DadosDigimon';
+import { StyleSheet } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 

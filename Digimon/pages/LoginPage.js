@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, ImageBackground, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginPage = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
   const backgroundImage = require('../imagens/LoginPage.jpg');
+  const navigation = useNavigation(); // Obtenha o objeto de navegação
 
   const handleLogin = () => {
     console.log('Login:', login);
     console.log('Password:', password);
+
+    // Navegue para a página DadosDigimon
+    navigation.navigate('DadosDigimon');
   };
 
   return (

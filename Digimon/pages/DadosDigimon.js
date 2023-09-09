@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import DigimonCard from '../Components/DetalhesDigimon';
+import DigimonCard from '../Components/DigimonCard';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 const DadosDigimon = () => {
   const [digimons, setDigimons] = useState([]);
@@ -64,72 +65,112 @@ const DadosDigimon = () => {
       if (i > pageNumber) break;
 
       divs.push(
-        <div
-          onClick={() => handlePageClick(i)}
+        <TouchableOpacity
+          onPress={() => handlePageClick(i)}
           key={i}
           style={{
-            padding: '5px',
+            padding: 5,
             backgroundColor: i === currentPage ? 'yellow' : 'white',
-            margin: '5px',
+            margin: 5,
             cursor: 'pointer',
           }}
         >
-          {i}
-        </div>
+          <Text>{i}</Text>
+        </TouchableOpacity>
       );
     }
 
     return (
-      <div style={{ fontSize: '10px', display: 'flex' }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
         {currentPage > 1 && (
-          <div onClick={handleFirstPage} style={{ padding: '5px', backgroundColor: 'yellow', margin: '5px' }}>
-            {'<<'}
-          </div>
+          <TouchableOpacity
+            onPress={handleFirstPage}
+            style={{ padding: 5, backgroundColor: 'yellow', margin: 5, cursor: 'pointer' }}
+          >
+            <Text>{'<<'}</Text>
+          </TouchableOpacity>
         )}
         {currentPage > 1 && (
-          <div onClick={handlePrevPage} style={{ padding: '5px', backgroundColor: 'yellow', margin: '5px' }}>
-            {'<'}
-          </div>
+          <TouchableOpacity
+            onPress={handlePrevPage}
+            style={{ padding: 5, backgroundColor: 'yellow', margin: 5, cursor: 'pointer' }}
+          >
+            <Text>{'<'}</Text>
+          </TouchableOpacity>
         )}
         {divs}
         {currentPage < pageNumber && (
-          <div onClick={handleNextPage} style={{ padding: '5px', backgroundColor: 'yellow', margin: '5px' }}>
-            {'>'}
-          </div>
+          <TouchableOpacity
+            onPress={handleNextPage}
+            style={{ padding: 5, backgroundColor: 'yellow', margin: 5, cursor: 'pointer' }}
+          >
+            <Text>{'>'}</Text>
+          </TouchableOpacity>
         )}
         {currentPage < pageNumber && (
-          <div onClick={handleLastPage} style={{ padding: '5px', backgroundColor: 'yellow', margin: '5px' }}>
-            {'>>'}
-          </div>
+          <TouchableOpacity
+            onPress={handleLastPage}
+            style={{ padding: 5, backgroundColor: 'yellow', margin: 5, cursor: 'pointer' }}
+          >
+            <Text>{'>>'}</Text>
+          </TouchableOpacity>
         )}
-      </div>
+      </View>
     );
   };
 
   return (
-    <div>
-      <header className="containerHeader">Deck Digimons: {currentPage}</header>
-      <div className="digimonGrid">
+    <View>
+      <Text style={styles.containerHeader}>Deck Digimons: {currentPage}</Text>
+      <View style={styles.digimonGrid}>
         {currentDigimons &&
           currentDigimons.map((digimon) => (
-            <button
-              className="digimonItem"
+            <TouchableOpacity
+              style={styles.digimonItem}
               key={digimon.name}
-              onClick={() => setSelectedDigimon(digimon)}
+              onPress={() => setSelectedDigimon(digimon)}
             >
-              <img
-                src={digimon.img}
-                alt={digimon.name}
-                onLoad={(e) => e.target.classList.add('loaded')}
+              {/* Substitua a tag <img> pelo componente <Image> */}
+              <Image
+                source={{ uri: digimon.img }} // Certifique-se de que a propriedade 'source' esteja configurada corretamente
+                style={{ width: 100, height: 100 }} // Ajuste o estilo de acordo com suas necessidades
               />
-              <p>{digimon.name}</p>
-            </button>
+              <Text>{digimon.name}</Text>
+            </TouchableOpacity>
           ))}
-      </div>
+      </View>
       {selectedDigimon && <DigimonCard digimon={selectedDigimon} setSelectedDigimon={setSelectedDigimon} />}
       <PagesComponent />
-    </div>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  containerHeader: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  digimonGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  digimonItem: {
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 10,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+});
 
 export default DadosDigimon;
