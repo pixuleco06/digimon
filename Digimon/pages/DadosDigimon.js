@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import DigimonCard from '../Components/DigimonCard';
-import { View, Text, TouchableOpacity, Image, StyleSheet, Modal, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Modal, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; 
 
 const DadosDigimon = () => {
+  const navigation = useNavigation(); 
+
   const [digimons, setDigimons] = useState([]);
   const [selectedDigimon, setSelectedDigimon] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +19,7 @@ const DadosDigimon = () => {
         const response = await axios.get('https://digimon-api.vercel.app/api/digimon');
         const data = response.data.slice();
         setDigimons(data);
-        setPageNumber(Math.ceil(data.length / 8)); // Calcular o número total de páginas
+        setPageNumber(Math.ceil(data.length / 8)); 
       } catch (error) {
         console.log(error);
       }
@@ -52,6 +54,7 @@ const DadosDigimon = () => {
 
     const handlePageClick = (page) => {
       setCurrentPage(page);
+      closeModal();
     };
 
     const handleFirstPage = () => {
@@ -149,18 +152,52 @@ const DadosDigimon = () => {
             </TouchableOpacity>
           ))}
       </View>
-      <Modal animationType="slide" transparent={true} visible={isModalVisible}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={closeModal}
+      >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <ScrollView style={styles.modalScrollView}>
-              {selectedDigimon && (
-                <DigimonCard digimon={selectedDigimon} setSelectedDigimon={setSelectedDigimon} />
-              )}
-              <TouchableOpacity onPress={closeModal} style={styles.closeButtonContainer}>
-                <Text style={styles.closeButton}>Fechar</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          </View>
+          <ScrollView style={styles.modalContent}>
+            {selectedDigimon && (
+              <View>
+                <Text style={styles.digimonName}>{selectedDigimon.name}</Text>
+                <Image
+                  source={{ uri: selectedDigimon.img }}
+                  style={styles.digimonImage}
+                />
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={closeModal}
+                >
+                  <Text style={styles.closeButtonText}>Fechar</Text>
+                </TouchableOpacity>
+                <View style={styles.digimonInfo}>
+                  <TouchableOpacity
+                    style={styles.detalhesButton}
+                    onPress={() =>
+                      navigation.navigate('MaisDetalhes', {
+                        digimon: {
+                          name: selectedDigimon.name,
+                          level: selectedDigimon.level,
+                          altura: selectedDigimon.altura,
+                          idade: selectedDigimon.idade,
+                          treinador: selectedDigimon.treinador,
+                          ultimaBatalha: selectedDigimon.ultimaBatalha,
+                          img: selectedDigimon.img,
+                        },
+                      })
+                    }
+                  >
+                    <Text style={styles.detalhesButtonText}>
+                      Mais Detalhes
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </ScrollView>
         </View>
       </Modal>
       <PagesComponent />
@@ -173,7 +210,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: 'center',
   },
   digimonGrid: {
     flexDirection: 'row',
@@ -204,25 +240,48 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
+    padding: 16,
+    width: '80%',
+    maxHeight: '80%',
   },
-  closeButtonContainer: {
-    alignItems: 'center',
+  digimonName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  digimonImage: {
+    width: 150,
+    height: 150,
+    alignSelf: 'center',
+    marginVertical: 10,
   },
   closeButton: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 10,
-    color: 'white',
     backgroundColor: 'red',
     padding: 10,
     borderRadius: 5,
+    alignSelf: 'center',
+    marginVertical: 10,
   },
-  modalScrollView: {
-    maxHeight: Dimensions.get('window').height - 200,
+  closeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  digimonInfo: {
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  detalhesButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+  },
+  detalhesButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
 export default DadosDigimon;
-//teste
