@@ -7,13 +7,12 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const backgroundImage = require('../imagens/LoginPage.jpg');
-  const navigation = useNavigation(); // Obtenha o objeto de navegação
+  const navigation = useNavigation(); 
 
   const handleLogin = () => {
     console.log('Login:', login);
     console.log('Password:', password);
 
-    // Navegue para a página DadosDigimon
     navigation.navigate('DadosDigimon');
   };
 
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     backgroundColor: 'transparent',
     fontSize: 18,
-    color: 'black', // Letras pretas
+    color: 'black', 
   },
 });
 
