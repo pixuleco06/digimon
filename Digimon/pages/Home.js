@@ -3,7 +3,7 @@ import axios from 'axios';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Modal, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; 
 
-const DadosDigimon = () => {
+const Home = () => {
   const navigation = useNavigation(); 
 
   const [digimons, setDigimons] = useState([]);
@@ -284,4 +284,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DadosDigimon;
+export default Home;

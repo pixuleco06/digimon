@@ -13,7 +13,7 @@ const LoginPage = () => {
     if (login.trim() === '' || password.trim() === '') {
       Alert.alert('O preenchimento dos campos é obrigatório');
     } else {
-      navigation.navigate('DadosDigimon');
+      navigation.navigate('Home');
     }
   };
 
